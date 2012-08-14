@@ -27,6 +27,7 @@
 		this.language = options.language||this.element.data('date-language')||"en";
 		this.language = this.language in dates ? this.language : "en";
 		this.format = DPGlobal.parseFormat(options.format||this.element.data('date-format')||'mm/dd/yyyy');
+    this.altField = options.altField;
 		this.picker = $(DPGlobal.template)
 							.appendTo('body')
 							.on({
@@ -172,15 +173,18 @@
 
 		setValue: function() {
 			var formatted = DPGlobal.formatDate(this.date, this.format, this.language);
-			if (!this.isInput) {
-				if (this.component){
-					this.element.find('input').prop('value', formatted);
-				}
-				this.element.data('date', formatted);
+      if (this.altField) {
+        this.element.find(this.altField).prop('value', formatted);
 			} else {
-				this.element.prop('value', formatted);
-			}
-		},
+        if (!this.isInput) {
+				  if (this.component){
+					  this.element.find('input').prop('value', formatted);
+				  }
+				  this.element.data('date', formatted);
+			  } else {
+				  this.element.prop('value', formatted);
+			  }
+		  },
 
 		setStartDate: function(startDate){
 			this.startDate = startDate||-Infinity;
